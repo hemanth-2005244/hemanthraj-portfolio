@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-export type BgMode = "neural" | "robo" | "quantum" | "hypermesh";
+export type BgMode = "neural" | "robo" | "matrix" | "hypermesh";
 
 interface BackgroundCanvasProps {
   mode: BgMode;
@@ -161,47 +161,11 @@ export const BackgroundCanvas: React.FC<BackgroundCanvasProps> = ({ mode }) => {
       new RoboCreature("#7000ff"),
     ];
 
-    // MODE 3: QUANTUM SINGULARITY VOID (COOL SINGULARITY BLACK HOLE)
-    class QuantumParticle {
-      angle: number;
-      distance: number;
-      speed: number;
-      size: number;
-      color: string;
-
-      constructor() {
-        this.angle = Math.random() * Math.PI * 2;
-        this.distance = Math.random() * Math.min(width, height) * 0.45 + 50;
-        this.speed = (Math.random() * 0.02 + 0.005) * (Math.random() > 0.5 ? 1 : -1);
-        this.size = Math.random() * 2.5 + 1;
-        const colors = ["#00f2fe", "#7000ff", "#00f5d4", "#ff007f", "#ffffff"];
-        this.color = colors[Math.floor(Math.random() * colors.length)];
-      }
-
-      update() {
-        this.angle += this.speed;
-        this.distance -= 0.15;
-        if (this.distance < 25) {
-          this.distance = Math.random() * Math.min(width, height) * 0.45 + 100;
-        }
-      }
-
-      draw() {
-        if (!ctx) return;
-        const px = mouse.x + Math.cos(this.angle) * this.distance;
-        const py = mouse.y + Math.sin(this.angle) * this.distance;
-
-        ctx.beginPath();
-        ctx.arc(px, py, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = this.color;
-        ctx.fill();
-      }
-    }
-
-    const quantumParticles = Array.from({ length: 120 }, () => new QuantumParticle());
-    let quantumAngle = 0;
+    // MODE 3: DIGITAL CODE MATRIX STREAM ("matrix")
+    const charArray = "010101λ∑ΨΩαβγ0x9FLLM_AGENT_RAG_VECTOR_PROMPT_ENGINEER_AI".split("");
+    const fontSize = 14;
+    const columns = Math.floor(width / fontSize);
+    const drops: number[] = Array.from({ length: columns }, () => Math.floor(Math.random() * -100));
 
     // MODE 4: HYPER-DIMENSIONAL MESH
     let meshTime = 0;
@@ -210,7 +174,6 @@ export const BackgroundCanvas: React.FC<BackgroundCanvasProps> = ({ mode }) => {
       ctx.clearRect(0, 0, width, height);
 
       if (mode === "neural") {
-        // Radial mouse light
         const gradient = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 400);
         gradient.addColorStop(0, "rgba(0, 242, 254, 0.08)");
         gradient.addColorStop(0.5, "rgba(112, 0, 255, 0.04)");
@@ -246,42 +209,40 @@ export const BackgroundCanvas: React.FC<BackgroundCanvasProps> = ({ mode }) => {
           r.update();
           r.draw();
         });
-      } else if (mode === "quantum") {
-        // Quantum Singularity Black Hole Effect centered on cursor
-        quantumAngle += 0.02;
+      } else if (mode === "matrix") {
+        ctx.fillStyle = "rgba(5, 8, 17, 0.2)";
+        ctx.fillRect(0, 0, width, height);
 
-        // Outer Accretion Energy Disks
-        ctx.save();
-        ctx.translate(mouse.x, mouse.y);
-        ctx.rotate(quantumAngle);
+        ctx.font = "bold 13px monospace";
 
-        for (let r = 40; r <= 220; r += 45) {
-          ctx.beginPath();
-          ctx.arc(0, 0, r, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(${r % 2 === 0 ? "0, 242, 254" : "112, 0, 255"}, 0.2)`;
-          ctx.lineWidth = 1.5;
-          ctx.setLineDash([15, 10]);
-          ctx.stroke();
+        for (let i = 0; i < drops.length; i++) {
+          const char = charArray[Math.floor(Math.random() * charArray.length)];
+          const x = i * fontSize;
+          const y = drops[i] * fontSize;
+
+          const dx = mouse.x - x;
+          const dy = mouse.y - y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const isNearMouse = dist < 120;
+
+          if (isNearMouse) {
+            ctx.fillStyle = "#ffffff";
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = "#00f5d4";
+          } else {
+            ctx.fillStyle = drops[i] % 3 === 0 ? "#00f5d4" : "#00f2fe";
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = "#00f2fe";
+          }
+
+          ctx.fillText(char, x, y);
+          ctx.shadowBlur = 0;
+
+          if (y > height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
         }
-        ctx.setLineDash([]);
-
-        // Core Singularity Event Horizon
-        ctx.beginPath();
-        ctx.arc(0, 0, 28, 0, Math.PI * 2);
-        ctx.fillStyle = "#050811";
-        ctx.shadowBlur = 35;
-        ctx.shadowColor = "#00f2fe";
-        ctx.fill();
-        ctx.strokeStyle = "#00f5d4";
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        ctx.restore();
-
-        quantumParticles.forEach((qp) => {
-          qp.update();
-          qp.draw();
-        });
       } else if (mode === "hypermesh") {
         meshTime += 0.02;
         const cols = Math.floor(width / 60) + 1;

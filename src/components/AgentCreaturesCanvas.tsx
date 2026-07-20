@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-
 import { soundFx } from "../utils/audio";
 import { Bot, X, Play } from "lucide-react";
 
@@ -104,7 +103,6 @@ export const AgentCreaturesCanvas: React.FC = () => {
       }
 
       update() {
-        // Sentinel Orchestrator gently follows mouse, others wander autonomously
         if (this.type === "orchestrator") {
           const dx = mouse.x - this.x;
           const dy = mouse.y - this.y;
@@ -122,7 +120,6 @@ export const AgentCreaturesCanvas: React.FC = () => {
         this.x += this.vx;
         this.y += this.vy;
 
-        // Soft bounce at bounds
         if (this.x < 60) { this.x = 60; this.vx *= -1; }
         if (this.x > width - 60) { this.x = width - 60; this.vx *= -1; }
         if (this.y < 80) { this.y = 80; this.vy *= -1; }
@@ -137,7 +134,6 @@ export const AgentCreaturesCanvas: React.FC = () => {
         ctx.save();
         ctx.translate(this.x, this.y);
 
-        // Outer Rotating Segment Ring
         ctx.rotate(this.angle);
         ctx.beginPath();
         ctx.arc(0, 0, this.radius + 8 + this.pulse, 0, Math.PI * 2);
@@ -147,7 +143,6 @@ export const AgentCreaturesCanvas: React.FC = () => {
         ctx.stroke();
         ctx.setLineDash([]);
 
-        // Core Glowing Hexagon / Geometry
         ctx.rotate(-this.angle * 2);
         ctx.beginPath();
         const sides = 6;
@@ -168,7 +163,6 @@ export const AgentCreaturesCanvas: React.FC = () => {
         ctx.fill();
         ctx.stroke();
 
-        // Inner glowing point
         ctx.beginPath();
         ctx.arc(0, 0, 4, 0, Math.PI * 2);
         ctx.fillStyle = "#ffffff";
@@ -176,7 +170,6 @@ export const AgentCreaturesCanvas: React.FC = () => {
 
         ctx.restore();
 
-        // Label Badge
         ctx.fillStyle = this.color;
         ctx.font = "bold 10px monospace";
         ctx.textAlign = "center";
@@ -235,7 +228,6 @@ export const AgentCreaturesCanvas: React.FC = () => {
       ),
     ];
 
-    // Handle Creature Tap/Click
     const handleCanvasClick = (e: MouseEvent) => {
       const clickX = e.clientX;
       const clickY = e.clientY;
@@ -244,7 +236,6 @@ export const AgentCreaturesCanvas: React.FC = () => {
         const dist = Math.sqrt((clickX - agent.x) ** 2 + (clickY - agent.y) ** 2);
         if (dist < agent.radius + 25) {
           soundFx.playSuccess();
-          // Add Shockwave Burst
           shockwaves.push({
             x: agent.x,
             y: agent.y,
@@ -273,11 +264,9 @@ export const AgentCreaturesCanvas: React.FC = () => {
 
     window.addEventListener("click", handleCanvasClick);
 
-    // Animation Render Loop
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Render Shockwave Bursts
       for (let i = shockwaves.length - 1; i >= 0; i--) {
         const s = shockwaves[i];
         s.radius += 2.5;
@@ -295,12 +284,10 @@ export const AgentCreaturesCanvas: React.FC = () => {
         ctx.globalAlpha = 1;
       }
 
-      // Update and Draw Agents
       agents.forEach((agent) => {
         agent.update();
         agent.draw();
 
-        // Connect neural swarm lines between Orchestrator and other agents
         if (agent.type !== "orchestrator") {
           const orchestrator = agents[0];
           const dx = orchestrator.x - agent.x;
@@ -380,7 +367,6 @@ export const AgentCreaturesCanvas: React.FC = () => {
         }}
       />
 
-      {/* Interactive Agent Inspection & Execution Drawer */}
       {selectedAgent && (
         <div
           style={{
@@ -402,7 +388,6 @@ export const AgentCreaturesCanvas: React.FC = () => {
               position: "relative",
             }}
           >
-            {/* Close Button */}
             <button
               onClick={() => setSelectedAgent(null)}
               style={{
@@ -420,7 +405,6 @@ export const AgentCreaturesCanvas: React.FC = () => {
               <X size={16} />
             </button>
 
-            {/* Header */}
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "1rem" }}>
               <div
                 style={{
@@ -451,7 +435,6 @@ export const AgentCreaturesCanvas: React.FC = () => {
               {selectedAgent.role}
             </p>
 
-            {/* System Instruction Box */}
             <div
               style={{
                 background: "rgba(5, 8, 17, 0.85)",
@@ -468,7 +451,6 @@ export const AgentCreaturesCanvas: React.FC = () => {
               "{selectedAgent.systemInstruction}"
             </div>
 
-            {/* Tools Stack Chips */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "1.25rem" }}>
               {selectedAgent.tools.map((t, idx) => (
                 <span
@@ -487,7 +469,6 @@ export const AgentCreaturesCanvas: React.FC = () => {
               ))}
             </div>
 
-            {/* Action Trigger Buttons */}
             <div style={{ display: "flex", gap: "8px", marginBottom: "1rem" }}>
               <button
                 onClick={() =>
@@ -515,7 +496,6 @@ export const AgentCreaturesCanvas: React.FC = () => {
               </button>
             </div>
 
-            {/* Live Execution Output Log */}
             {executionLog && (
               <div
                 style={{

@@ -22,7 +22,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
 
   const hologramCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // Typewriter effect
   useEffect(() => {
     const currentFullTitle = titles[titleIndex];
     const typingSpeed = isDeleting ? 35 : 70;
@@ -45,7 +44,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
     return () => clearTimeout(timeout);
   }, [displayText, isDeleting, titleIndex]);
 
-  // Procedural GSAP 3D Cyber Hologram Canvas Animation (No static images!)
   useEffect(() => {
     const canvas = hologramCanvasRef.current;
     if (!canvas) return;
@@ -79,7 +77,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
       ctx.clearRect(0, 0, size, size);
       angle += 0.02;
 
-      // Outer Rotating Ring
       ctx.save();
       ctx.translate(center, center);
       ctx.rotate(angle);
@@ -92,7 +89,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
       ctx.stroke();
       ctx.setLineDash([]);
 
-      // Inner Counter-Rotating Hex Ring
       ctx.rotate(-angle * 2);
       ctx.beginPath();
       const sides = 6;
@@ -110,7 +106,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
 
       ctx.restore();
 
-      // Energy Orbiting Particles
       particles.forEach((p) => {
         p.angle += p.speed;
         const px = center + Math.cos(p.angle) * p.radius;
@@ -124,7 +119,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
         ctx.fill();
       });
 
-      // Core Glowing Orb
       ctx.beginPath();
       ctx.arc(center, center, 38 + Math.sin(angle * 3) * 4, 0, Math.PI * 2);
       const gradient = ctx.createRadialGradient(center, center, 0, center, center, 42);
@@ -136,7 +130,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
       ctx.shadowColor = "#00f2fe";
       ctx.fill();
 
-      // Center Core Icon Text
       ctx.fillStyle = "#050811";
       ctx.font = "bold 13px monospace";
       ctx.textAlign = "center";
@@ -152,6 +145,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
 
   const handleTapHologram = () => {
     soundFx.playSuccess();
+    soundFx.speakData("AI Agent Hologram Core Active", `Injected prompt pulse count ${pulseCount + 1}`);
     setPulseCount((prev) => prev + 1);
 
     const canvas = hologramCanvasRef.current;
@@ -192,11 +186,13 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
             alignItems: "center",
           }}
         >
-          {/* Hero Left Content */}
           <div>
             <div
               className="cyber-badge"
-              onClick={() => soundFx.playClick()}
+              onClick={() => {
+                soundFx.playClick();
+                soundFx.speakData("Status Available for AI and Machine Learning Roles");
+              }}
               style={{ marginBottom: "1.25rem", gap: "8px", cursor: "pointer" }}
             >
               <span
@@ -262,7 +258,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
               Engineering future-ready Artificial Intelligence, Autonomous Agentic Swarms, RAG Knowledge Architectures, and responsive full-stack software applications from ANITS, Visakhapatnam.
             </p>
 
-            {/* Action Buttons */}
             <div
               style={{
                 display: "flex",
@@ -274,6 +269,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
               <button
                 onClick={() => {
                   soundFx.playSuccess();
+                  soundFx.speakData("Opening ATS Resume modal");
                   onOpenResumeModal();
                 }}
                 className="btn-cyber-primary"
@@ -283,14 +279,16 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
 
               <a
                 href="#projects"
-                onClick={() => soundFx.playClick()}
+                onClick={() => {
+                  soundFx.playClick();
+                  soundFx.speakData("Navigating to Featured Projects");
+                }}
                 className="btn-cyber-outline"
               >
                 Explore Agentic Projects <ArrowRight size={18} />
               </a>
             </div>
 
-            {/* Quick Location & School */}
             <div
               style={{
                 display: "flex",
@@ -313,7 +311,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
             </div>
           </div>
 
-          {/* Hero Right: 100% Procedural GSAP Hologram Matrix Core (No Static Images!) */}
           <div style={{ position: "relative" }}>
             <div
               className="glass-panel"
@@ -325,7 +322,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
                 boxShadow: "0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 242, 254, 0.2)",
               }}
             >
-              {/* Header */}
               <div
                 style={{
                   display: "flex",
@@ -362,7 +358,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
                 </span>
               </div>
 
-              {/* Procedural Holographic Canvas Container */}
               <div
                 onClick={handleTapHologram}
                 style={{
@@ -403,7 +398,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
                 </div>
               </div>
 
-              {/* Developer Object Code Box */}
               <div
                 style={{
                   background: "rgba(5, 8, 17, 0.85)",
@@ -432,7 +426,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
           </div>
         </div>
 
-        {/* Metrics Grid */}
         <div
           style={{
             display: "grid",
@@ -445,7 +438,8 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResumeModal }) => {
             <div
               key={idx}
               className="glass-card"
-              onClick={() => soundFx.playHover()}
+              onMouseEnter={() => soundFx.speakData(m.label, m.value)}
+              onClick={() => soundFx.speakData(m.label, m.detail)}
               style={{
                 padding: "1.5rem",
                 textAlign: "center",

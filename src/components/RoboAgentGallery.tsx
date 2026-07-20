@@ -10,12 +10,10 @@ export const RoboAgentGallery: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const scanBeamRef = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
-  // Canvas Refs for 100% Procedural Animated Visual Models (No Static Images!)
   const canvasRef1 = useRef<HTMLCanvasElement | null>(null);
   const canvasRef2 = useRef<HTMLCanvasElement | null>(null);
   const canvasRef3 = useRef<HTMLCanvasElement | null>(null);
 
-  // Procedural Canvas 1: Gen AI Agentic Swarm Network
   useEffect(() => {
     const canvas = canvasRef1.current;
     if (!canvas) return;
@@ -31,7 +29,6 @@ export const RoboAgentGallery: React.FC = () => {
       ctx.clearRect(0, 0, w, h);
       t += 0.025;
 
-      // Dark Tech Grid Background
       ctx.strokeStyle = "rgba(0, 242, 254, 0.08)";
       ctx.lineWidth = 1;
       for (let x = 0; x < w; x += 30) {
@@ -41,7 +38,6 @@ export const RoboAgentGallery: React.FC = () => {
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
       }
 
-      // Dynamic Node Swarm
       const nodes = [
         { x: 70, y: 120 + Math.sin(t) * 20, name: "ORCHESTRATOR", color: "#00f2fe" },
         { x: 190, y: 60 + Math.cos(t * 1.2) * 15, name: "RAG DB", color: "#a855f7" },
@@ -49,7 +45,6 @@ export const RoboAgentGallery: React.FC = () => {
         { x: 310, y: 120 + Math.cos(t) * 20, name: "SYNTHESIS", color: "#ff007f" },
       ];
 
-      // Draw Connection Beams
       nodes.forEach((n1, i) => {
         nodes.forEach((n2, j) => {
           if (i < j) {
@@ -66,7 +61,6 @@ export const RoboAgentGallery: React.FC = () => {
         });
       });
 
-      // Draw Nodes
       nodes.forEach((n) => {
         ctx.beginPath();
         ctx.arc(n.x, n.y, 14, 0, Math.PI * 2);
@@ -91,7 +85,6 @@ export const RoboAgentGallery: React.FC = () => {
     return () => cancelAnimationFrame(animId);
   }, []);
 
-  // Procedural Canvas 2: RAG Vector Database & Cosine Similarity Matrix
   useEffect(() => {
     const canvas = canvasRef2.current;
     if (!canvas) return;
@@ -107,11 +100,9 @@ export const RoboAgentGallery: React.FC = () => {
       ctx.clearRect(0, 0, w, h);
       t += 0.03;
 
-      // Dark Background
       ctx.fillStyle = "rgba(5, 8, 17, 0.95)";
       ctx.fillRect(0, 0, w, h);
 
-      // Radar Concentric Circles
       ctx.save();
       ctx.translate(w / 2, h / 2);
       for (let r = 30; r <= 100; r += 35) {
@@ -122,7 +113,6 @@ export const RoboAgentGallery: React.FC = () => {
         ctx.stroke();
       }
 
-      // Sweeping Scanning Radar Line
       ctx.beginPath();
       ctx.moveTo(0, 0);
       ctx.lineTo(Math.cos(t) * 110, Math.sin(t) * 110);
@@ -130,7 +120,6 @@ export const RoboAgentGallery: React.FC = () => {
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Vector Embedding Points
       for (let i = 0; i < 16; i++) {
         const angle = i * 0.4 + t * 0.2;
         const radius = (i * 7 + 20) % 95;
@@ -159,7 +148,6 @@ export const RoboAgentGallery: React.FC = () => {
     return () => cancelAnimationFrame(animId);
   }, []);
 
-  // Procedural Canvas 3: Machine Failure Predictive Model Classifier
   useEffect(() => {
     const canvas = canvasRef3.current;
     if (!canvas) return;
@@ -178,7 +166,6 @@ export const RoboAgentGallery: React.FC = () => {
       ctx.fillStyle = "rgba(5, 8, 17, 0.95)";
       ctx.fillRect(0, 0, w, h);
 
-      // Decision Tree Nodes Hierarchy
       const root = { x: w / 2, y: 35 };
       const level2 = [
         { x: w / 2 - 80, y: 100 },
@@ -191,7 +178,6 @@ export const RoboAgentGallery: React.FC = () => {
         { x: w / 2 + 120, y: 170, label: "FAILURE [96.0%]" },
       ];
 
-      // Draw Tree Edges
       ctx.strokeStyle = "rgba(0, 242, 254, 0.4)";
       ctx.lineWidth = 1.5;
 
@@ -204,7 +190,6 @@ export const RoboAgentGallery: React.FC = () => {
         ctx.beginPath(); ctx.moveTo(parent.x, parent.y); ctx.lineTo(l3.x, l3.y); ctx.stroke();
       });
 
-      // Draw Root & Nodes
       [root, ...level2, ...level3].forEach((node, idx) => {
         ctx.beginPath();
         ctx.arc(node.x, node.y, 8 + Math.sin(t + idx) * 2, 0, Math.PI * 2);
@@ -259,8 +244,9 @@ export const RoboAgentGallery: React.FC = () => {
     },
   ];
 
-  const handleRoboScan = (id: string) => {
+  const handleRoboScan = (id: string, title: string) => {
     soundFx.playClick();
+    soundFx.speakData("Executing Robo Laser Scan", title);
     setScanningId(id);
     setActiveAnalysis(id);
 
@@ -277,6 +263,7 @@ export const RoboAgentGallery: React.FC = () => {
           ease: "power2.inOut",
           onComplete: () => {
             soundFx.playSuccess();
+            soundFx.speakData("Scan completed", telemetryShort(id));
             setScanningId(null);
           },
         }
@@ -284,8 +271,15 @@ export const RoboAgentGallery: React.FC = () => {
     }
   };
 
-  const handleNeuralEnhance = (e: React.MouseEvent<HTMLDivElement>) => {
+  const telemetryShort = (id: string) => {
+    if (id === "genai-swarm") return "Agent Orchestrator State Active";
+    if (id === "rag-vector") return "Chroma Vector Similarity 0.948";
+    return "Machine Failure Accuracy 96.4 percent";
+  };
+
+  const handleNeuralEnhance = (e: React.MouseEvent<HTMLDivElement>, title: string) => {
     soundFx.playHover();
+    soundFx.speakData(title);
     const card = e.currentTarget;
     gsap.to(card, {
       scale: 1.03,
@@ -312,7 +306,6 @@ export const RoboAgentGallery: React.FC = () => {
   return (
     <section id="robo-gallery" style={{ padding: "6rem 0", position: "relative" }}>
       <div className="container" ref={containerRef}>
-        {/* Section Header */}
         <div className="section-header">
           <div className="cyber-badge" style={{ marginBottom: "0.75rem" }}>
             <Bot size={14} /> Procedural Visual Scanner
@@ -325,7 +318,6 @@ export const RoboAgentGallery: React.FC = () => {
           </p>
         </div>
 
-        {/* Gallery Grid */}
         <div
           style={{
             display: "grid",
@@ -337,7 +329,7 @@ export const RoboAgentGallery: React.FC = () => {
             <div
               key={item.id}
               className="glass-panel"
-              onMouseEnter={handleNeuralEnhance}
+              onMouseEnter={(e) => handleNeuralEnhance(e, item.title)}
               onMouseLeave={handleMouseLeave}
               style={{
                 padding: "1.75rem",
@@ -347,7 +339,6 @@ export const RoboAgentGallery: React.FC = () => {
                 perspective: "1000px",
               }}
             >
-              {/* Procedural Animated Canvas Frame (100% Dynamic, No Static Images!) */}
               <div
                 style={{
                   width: "100%",
@@ -368,7 +359,6 @@ export const RoboAgentGallery: React.FC = () => {
                   }}
                 />
 
-                {/* Laser Scanning Beam Overlay */}
                 <div
                   ref={(el) => {
                     scanBeamRef.current[item.id] = el;
@@ -386,7 +376,6 @@ export const RoboAgentGallery: React.FC = () => {
                   }}
                 />
 
-                {/* Scanning Drone Badge */}
                 {scanningId === item.id && (
                   <div
                     style={{
@@ -412,7 +401,6 @@ export const RoboAgentGallery: React.FC = () => {
                 )}
               </div>
 
-              {/* Title & Specs */}
               <div
                 style={{
                   fontSize: "0.8rem",
@@ -447,7 +435,6 @@ export const RoboAgentGallery: React.FC = () => {
                 {item.description}
               </p>
 
-              {/* Robo Agent Action Trigger Buttons */}
               <div
                 style={{
                   display: "flex",
@@ -457,7 +444,7 @@ export const RoboAgentGallery: React.FC = () => {
                 }}
               >
                 <button
-                  onClick={() => handleRoboScan(item.id)}
+                  onClick={() => handleRoboScan(item.id, item.title)}
                   className="btn-cyber-primary"
                   style={{
                     padding: "8px 16px",
@@ -471,6 +458,7 @@ export const RoboAgentGallery: React.FC = () => {
                 <button
                   onClick={() => {
                     soundFx.playSuccess();
+                    soundFx.speakData("Telemetry Log for", item.title);
                     setActiveAnalysis(activeAnalysis === item.id ? null : item.id);
                   }}
                   className="btn-cyber-outline"
@@ -484,7 +472,6 @@ export const RoboAgentGallery: React.FC = () => {
                 </button>
               </div>
 
-              {/* Revealed AI Telemetry Display */}
               {activeAnalysis === item.id && (
                 <div
                   style={{

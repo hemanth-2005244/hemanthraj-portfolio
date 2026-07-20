@@ -53,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, bgMode, setBgMode
   };
 
   const bgModeOptions: { id: BgMode; label: string; icon: string }[] = [
-    { id: "quantum", label: "Quantum Void", icon: "🌌" },
+    { id: "matrix", label: "Matrix Stream", icon: "💻" },
     { id: "neural", label: "Neural Matrix", icon: "🧠" },
     { id: "robo", label: "Cyber Swarm", icon: "🤖" },
     { id: "hypermesh", label: "Hyper Mesh", icon: "⚡" },

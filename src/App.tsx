@@ -23,7 +23,7 @@ import { Footer } from "./components/Footer";
 
 export const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState("home");
-  const [bgMode, setBgMode] = useState<BgMode>("quantum");
+  const [bgMode, setBgMode] = useState<BgMode>("matrix");
   const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
 
   useEffect(() => {

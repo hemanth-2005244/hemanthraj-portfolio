@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-export type BgMode = "neural" | "robo" | "matrix" | "hypermesh";
+export type BgMode = "matrix" | "dna" | "neural" | "robo" | "hypermesh";
 
 interface BackgroundCanvasProps {
   mode: BgMode;
@@ -167,7 +167,10 @@ export const BackgroundCanvas: React.FC<BackgroundCanvasProps> = ({ mode }) => {
     const columns = Math.floor(width / fontSize);
     const drops: number[] = Array.from({ length: columns }, () => Math.floor(Math.random() * -100));
 
-    // MODE 4: HYPER-DIMENSIONAL MESH
+    // MODE 4: CYBER DNA HELIX ("dna")
+    let dnaTime = 0;
+
+    // MODE 5: HYPER-DIMENSIONAL MESH
     let meshTime = 0;
 
     const render = () => {
@@ -242,6 +245,48 @@ export const BackgroundCanvas: React.FC<BackgroundCanvasProps> = ({ mode }) => {
             drops[i] = 0;
           }
           drops[i]++;
+        }
+      } else if (mode === "dna") {
+        dnaTime += 0.03;
+        const totalPoints = 32;
+
+        for (let i = 0; i < totalPoints; i++) {
+          const y = (i * 28 + dnaTime * 45) % height;
+          const phase = i * 0.3 + dnaTime;
+
+          const offset = Math.sin(phase) * 90;
+
+          // Mouse attraction offset
+          const dy = mouse.y - y;
+          const pull = Math.max(0, 1 - Math.abs(dy) / 200) * 40;
+          const centerX = mouse.x * 0.3 + (width * 0.7) * 0.7 + Math.sin(dnaTime * 0.5) * pull;
+
+          const x1 = centerX + offset;
+          const x2 = centerX - offset;
+
+          // Draw Base Pair Connecting Rung
+          ctx.beginPath();
+          ctx.moveTo(x1, y);
+          ctx.lineTo(x2, y);
+          ctx.strokeStyle = "rgba(0, 242, 254, 0.25)";
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+
+          // Node 1 (Cyan)
+          ctx.beginPath();
+          ctx.arc(x1, y, 4 + Math.cos(phase) * 1.5, 0, Math.PI * 2);
+          ctx.fillStyle = "#00f2fe";
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = "#00f2fe";
+          ctx.fill();
+
+          // Node 2 (Purple/Neon)
+          ctx.beginPath();
+          ctx.arc(x2, y, 4 - Math.cos(phase) * 1.5, 0, Math.PI * 2);
+          ctx.fillStyle = "#7000ff";
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = "#7000ff";
+          ctx.fill();
         }
       } else if (mode === "hypermesh") {
         meshTime += 0.02;

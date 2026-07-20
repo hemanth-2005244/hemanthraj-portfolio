@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Terminal, Cpu, User, Briefcase, Award, Mail, Menu, X, Sparkles, Volume2, VolumeX, Bot, PlayCircle, Mic, MicOff, Globe, Layers } from "lucide-react";
+import { Terminal, Cpu, User, Briefcase, Award, Mail, Menu, X, Sparkles, Volume2, VolumeX, Bot, PlayCircle, Mic, MicOff } from "lucide-react";
 import confetti from "canvas-confetti";
 import { soundFx } from "../utils/audio";
 import type { BgMode } from "./BackgroundCanvas";

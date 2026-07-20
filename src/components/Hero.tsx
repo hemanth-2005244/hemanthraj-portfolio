@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Terminal, ArrowRight, GraduationCap, MapPin, Download, Bot, Sparkles, Cpu, Zap, Activity } from "lucide-react";
+import { Terminal, ArrowRight, GraduationCap, MapPin, Download, Bot, Zap } from "lucide-react";
 import gsap from "gsap";
 import { soundFx } from "../utils/audio";
 

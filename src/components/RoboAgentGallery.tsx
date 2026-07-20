@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { soundFx } from "../utils/audio";
-import { Bot, Scan, Sparkles, Cpu, Search, Database } from "lucide-react";
+import { Bot, Scan, Sparkles } from "lucide-react";
 
 export const RoboAgentGallery: React.FC = () => {
   const [scanningId, setScanningId] = useState<string | null>(null);

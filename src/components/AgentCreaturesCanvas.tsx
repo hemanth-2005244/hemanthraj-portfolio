@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
+
 import { soundFx } from "../utils/audio";
-import { Bot, X, Zap, Cpu, Search, Terminal, ShieldCheck, Play } from "lucide-react";
+import { Bot, X, Play } from "lucide-react";
 
 export interface AgentCreature {
   id: string;
